@@ -1,3 +1,4 @@
+// Fetch the vehicle data
 const getVehicleData = async () => {
 	try {
 		const response = await fetch('https://api.sawatchlabs.com/models/13/2017');
@@ -9,6 +10,7 @@ const getVehicleData = async () => {
 	}
 };
 
+// Sort vehicles alphabetically by the model
 const sortVehicles = data => {
 	let sorted = data.sort((a, b) =>
 		a.vehicle_model > b.vehicle_model ? 1 : -1
@@ -16,38 +18,26 @@ const sortVehicles = data => {
 
 	const tableBody = document.getElementById('swt-table-body');
 
+	// Map through each vehicle object and create a new row with specified data
 	sorted.map(vehicle => {
 		let vehicleRow = document.createElement('TR');
 
-		let yearData = document.createElement('TD');
-		let yearText = document.createTextNode(vehicle.vehicle_year);
-		yearData.appendChild(yearText);
-		vehicleRow.appendChild(yearData);
+		const vehicleData = [
+			'vehicle_year',
+			'make',
+			'vehicle_model',
+			'displacement',
+			'cylinders',
+			'class'
+		];
 
-		let makeData = document.createElement('TD');
-		let makeText = document.createTextNode(vehicle.make);
-		makeData.appendChild(makeText);
-		vehicleRow.appendChild(makeData);
-
-		let modelData = document.createElement('TD');
-		let modelText = document.createTextNode(vehicle.vehicle_model);
-		modelData.appendChild(modelText);
-		vehicleRow.appendChild(modelData);
-
-		let displacementData = document.createElement('TD');
-		let displacementText = document.createTextNode(vehicle.displacement);
-		displacementData.appendChild(displacementText);
-		vehicleRow.appendChild(displacementData);
-
-		let cylinderData = document.createElement('TD');
-		let cylinderText = document.createTextNode(vehicle.cylinders);
-		cylinderData.appendChild(cylinderText);
-		vehicleRow.appendChild(cylinderData);
-
-		let classData = document.createElement('TD');
-		let classText = document.createTextNode(vehicle.class);
-		classData.appendChild(classText);
-		vehicleRow.appendChild(classData);
+		// Loop through each piece of data we need and create a new table data node
+		for (let i = 0; i < vehicleData.length; i++) {
+			let dataNode = document.createElement('TD');
+			let textNode = document.createTextNode(vehicle[vehicleData[i]]);
+			dataNode.appendChild(textNode);
+			vehicleRow.appendChild(dataNode);
+		}
 
 		tableBody.appendChild(vehicleRow);
 	});
